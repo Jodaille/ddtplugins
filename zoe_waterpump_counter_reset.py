@@ -29,6 +29,7 @@ class Virginizer(gui.QDialog):
         self.table.setRowCount(4)  # Nombre de lignes
         self.table.setColumnCount(2)  # Nombre de colonnes
         self.table.setHorizontalHeaderLabels(["Nom", "Valeur"])  # Entêtes de colonnes
+        self.table.setColumnWidth(0, 200)
 
         # Ajout des données dans le tableau
         data = [
