@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-# (c) 2017
+# (c) 2025
+# Zoé EVC water pump counter reset values (low, medium, high speed + timer)
 
 import PyQt5.QtCore as core
 import PyQt5.QtWidgets as gui
@@ -47,7 +48,8 @@ class Virginizer(gui.QDialog):
         layout.addWidget(self.table)
 
         infos = gui.QLabel("Zoe water pump counters<br>"
-                             "water pump counters RESET")
+                             "<font color='red'>THIS PLUGIN WILL ERASE WATER PUMP COUNTERS<br>GO AWAY IF YOU HAVE NO IDEA OF WHAT IT MEANS</font>")
+
         infos.setAlignment(core.Qt.AlignHCenter)
         check_button = gui.QPushButton("Check values")
         self.status_check = gui.QLabel("Waiting action")
