@@ -72,7 +72,7 @@ class Virginizer(gui.QDialog):
     def get_counters_values(self):
         self.start_diag_session()
         self.get_low_speed_counter()
-        self.get_middle_speed_counter()
+        self.get_medium_speed_counter()
         self.get_high_speed_counter()
         self.get_timer_DrivWEP_ON()
         self.status_check.setText(_("<font color='green'>Values read</font>"))
@@ -103,7 +103,7 @@ class Virginizer(gui.QDialog):
         options.main_window.logview.append(value)
         self.table.setItem(0, 1, QTableWidgetItem(value))
 
-    def get_middle_speed_counter(self):
+    def get_medium_speed_counter(self):
         key_name = "($334A) Time Counter for the driving WEP in Middle Speed"
         middlespeed_check_request = self.evc_ecu.requests[
             u'DataRead.($334A) Time Counter for the driving WEP in Middle Speed']
@@ -144,17 +144,50 @@ class Virginizer(gui.QDialog):
 
     def reset_ecu(self):
         self.start_diag_session()
+        self.reset_low_speed_counter()
+        self.reset_medium_speed_counter()
+        self.reset_high_speed_counter()
+        self.reset_timer_DrivWEP()
 
+    def reset_timer_DrivWEP(self):
         reset_request = self.evc_ecu.requests[u"DataWrite.($3531) V_Timer_DrivWEP_ON"]
         request_response = reset_request.send_request()
         print(request_response)
         if request_response is not None:
-            self.status_check.setText(_("<font color='green'>CLEAR EXECUTED</font>"))
+            self.status_check.setText(_("<font color='green'>CLEAR V_Timer_DrivWEP_ON EXECUTED</font>"))
         else:
-            self.status_check.setText(_("<font color='red'>CLEAR FAILED</font>"))
-
+            self.status_check.setText(_("<font color='red'>CLEAR V_Timer_DrivWEP_ON FAILED</font>"))
         self.get_timer_DrivWEP_ON()
 
+    def reset_low_speed_counter(self):
+        reset_request = self.evc_ecu.requests[u"DataWrite.($3349) Time Counter for the driving WEP in Low Speed"]
+        request_response = reset_request.send_request()
+        print(request_response)
+        if request_response is not None:
+            self.status_check.setText(_("<font color='green'>CLEAR Low EXECUTED</font>"))
+        else:
+            self.status_check.setText(_("<font color='red'>CLEAR Low FAILED</font>"))
+        self.get_low_speed_counter()
+
+    def reset_medium_speed_counter(self):
+        reset_request = self.evc_ecu.requests[u"DataWrite.($334A) Time Counter for the driving WEP in Middle Speed"]
+        request_response = reset_request.send_request()
+        print(request_response)
+        if request_response is not None:
+            self.status_check.setText(_("<font color='green'>CLEAR Medium EXECUTED</font>"))
+        else:
+            self.status_check.setText(_("<font color='red'>CLEAR Medium FAILED</font>"))
+        self.get_medium_speed_counter()
+
+    def reset_high_speed_counter(self):
+        reset_request = self.evc_ecu.requests[u"DataWrite.($334B) Time Counter for the driving WEP in High Speed"]
+        request_response = reset_request.send_request()
+        print(request_response)
+        if request_response is not None:
+            self.status_check.setText(_("<font color='green'>CLEAR HIGH EXECUTED</font>"))
+        else:
+            self.status_check.setText(_("<font color='red'>CLEAR HIGH FAILED</font>"))
+        self.get_high_speed_counter()
 
 def plugin_entry():
     v = Virginizer()
