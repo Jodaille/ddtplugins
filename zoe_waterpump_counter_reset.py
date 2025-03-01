@@ -87,9 +87,11 @@ class Virginizer(gui.QDialog):
 
         options.main_window.logview.append("reading V_Timer_DrivWEP_ON")
         pumptimer_check_values = pumptimer_check_request.send_request()
-        print(pumptimer_check_values)
-        value = pumptimer_check_values.get(key_name)
-        value = str(value)
+        print(f"Réponse reçue: {pumptimer_check_values}")
+        if pumptimer_check_values:
+            value = pumptimer_check_values.get(key_name)
+        else:
+            value = "Not found"
         self.table.setItem(3, 1, QTableWidgetItem(value))
 
     def get_low_speed_counter(self):
