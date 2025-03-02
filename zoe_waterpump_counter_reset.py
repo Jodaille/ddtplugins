@@ -85,7 +85,7 @@ class Virginizer(gui.QDialog):
         <ul>
             <li>Insert key CARD</li>
             <li>Put D position</li>
-            <li>Press/Stay START until "Remove card" message</li>
+            <li>Press/Stay START until <b>"Remove card"</b> message</li>
             <li>Put P position</li>
         </ul>
         """
