@@ -6,7 +6,7 @@
 
 import PyQt5.QtCore as core
 import PyQt5.QtWidgets as gui
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTableWidget, QTableWidgetItem
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTableWidget, QTableWidgetItem, QLabel
 import ecu
 import options
 
@@ -22,18 +22,19 @@ class Virginizer(gui.QDialog):
         super(Virginizer, self).__init__()
         self.evc_ecu = ecu.Ecu_file(ecufile, True)
         self.setWindowTitle("Water pump counter")
-        self.setGeometry(100, 100, 480, 320)
+        # x, y, width, high
+        self.setGeometry(100, 100, 480, 420)
 
         layout = gui.QVBoxLayout()
 
         # Création du tableau
         self.table = QTableWidget()
-        self.table.setRowCount(4)  # Nombre de lignes
-        self.table.setColumnCount(3)  # Nombre de colonnes
-        self.table.setHorizontalHeaderLabels(["Name", "Values", "Action"])  # Entêtes de colonnes
+        self.table.setRowCount(4)  # Number of lines
+        self.table.setColumnCount(3)
+        self.table.setHorizontalHeaderLabels(["Name", "Values", "Action"])  # columns headers
         self.table.setColumnWidth(0, 200)
 
-        # Ajout des données dans le tableau
+        # Add data to table
         data = [
             ["Low Speed", "", ""],
             ["Middle Speed", "", ""],
@@ -77,6 +78,21 @@ class Virginizer(gui.QDialog):
         layout.addWidget(check_button)
         layout.addWidget(self.status_check)
         layout.addWidget(self.virginize_button)
+
+        # Créer une liste d'instructions
+        instructions_html = """
+        <h1>TIPS</h1>
+        <ul>
+            <li>Insert key CARD</li>
+            <li>Put D position</li>
+            <li>Press/Stay START until "Remove card" message</li>
+            <li>Put P position</li>
+        </ul>
+        """
+
+        label = QLabel(instructions_html)
+        layout.addWidget(label)
+
         self.setLayout(layout)
         self.virginize_button.setEnabled(True)
         self.virginize_button.clicked.connect(self.reset_ecu)
