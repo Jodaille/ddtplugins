@@ -2,6 +2,7 @@
 
 # (c) 2025
 # Zoé EVC water pump counter reset values (low, medium, high speed + timer)
+# cf error code: SYST ELEC A CONTROLLER
 
 import PyQt5.QtCore as core
 import PyQt5.QtWidgets as gui
@@ -21,28 +22,45 @@ class Virginizer(gui.QDialog):
         super(Virginizer, self).__init__()
         self.evc_ecu = ecu.Ecu_file(ecufile, True)
         self.setWindowTitle("Water pump counter")
-        self.setGeometry(100, 100, 400, 300)
+        self.setGeometry(100, 100, 480, 320)
 
         layout = gui.QVBoxLayout()
 
         # Création du tableau
         self.table = QTableWidget()
         self.table.setRowCount(4)  # Nombre de lignes
-        self.table.setColumnCount(2)  # Nombre de colonnes
-        self.table.setHorizontalHeaderLabels(["Nom", "Valeur"])  # Entêtes de colonnes
+        self.table.setColumnCount(3)  # Nombre de colonnes
+        self.table.setHorizontalHeaderLabels(["Name", "Values", "Action"])  # Entêtes de colonnes
         self.table.setColumnWidth(0, 200)
 
         # Ajout des données dans le tableau
         data = [
-            ["Low Speed", ""],
-            ["Middle Speed", ""],
-            ["High Speed", ""],
-            ["V_Timer_DrivWEP_ON", ""], #V_Timer_DrivWEP_ON
+            ["Low Speed", "", ""],
+            ["Middle Speed", "", ""],
+            ["High Speed", "", ""],
+            ["V_Timer_DrivWEP_ON", "", ""], #V_Timer_DrivWEP_ON
         ]
 
-        for row, (nom, valeur) in enumerate(data):
+        for row, (nom, valeur, action) in enumerate(data):
             self.table.setItem(row, 0, QTableWidgetItem(nom))
             self.table.setItem(row, 1, QTableWidgetItem(valeur))
+            self.table.setItem(row, 2, QTableWidgetItem(action))
+
+        resetlowBtn = gui.QPushButton("Reset")
+        self.table.setCellWidget(0, 2, resetlowBtn)
+        resetlowBtn.clicked.connect(self.reset_lowcounter)
+
+        resetmiddleBtn = gui.QPushButton("Reset")
+        self.table.setCellWidget(1, 2, resetmiddleBtn)
+        resetmiddleBtn.clicked.connect(self.reset_middlecounter)
+
+        resethighBtn = gui.QPushButton("Reset")
+        self.table.setCellWidget(2, 2, resethighBtn)
+        resethighBtn.clicked.connect(self.reset_highcounter)
+
+        resetdrivewepBtn = gui.QPushButton("Reset")
+        self.table.setCellWidget(3, 2, resetdrivewepBtn)
+        resetdrivewepBtn.clicked.connect(self.reset_DrivWEP)
 
         # Ajout du tableau au layout
         layout.addWidget(self.table)
@@ -146,6 +164,22 @@ class Virginizer(gui.QDialog):
             return
         options.elm.start_session_can(sds_stream)
 
+    def reset_lowcounter(self):
+        self.start_diag_session()
+        self.reset_low_speed_counter()
+
+    def reset_middlecounter(self):
+        self.start_diag_session()
+        self.reset_middle_speed_counter()
+
+    def reset_highcounter(self):
+        self.start_diag_session()
+        self.reset_high_speed_counter()
+
+    def reset_DrivWEP(self):
+        self.start_diag_session()
+        self.reset_timer_DrivWEP()
+
     def reset_ecu(self):
         self.start_diag_session()
         self.reset_low_speed_counter()
@@ -173,7 +207,7 @@ class Virginizer(gui.QDialog):
             self.status_check.setText(_("<font color='red'>CLEAR Low FAILED</font>"))
         self.get_low_speed_counter()
 
-    def reset_medium_speed_counter(self):
+    def reset_middle_speed_counter(self):
         reset_request = self.evc_ecu.requests[u"DataWrite.($334A) Time Counter for the driving WEP in Middle Speed"]
         request_response = reset_request.send_request()
         print(request_response)
