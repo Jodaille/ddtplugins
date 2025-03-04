@@ -195,15 +195,15 @@ class Virginizer(gui.QDialog):
         self.reset_low_speed_counter()
 
     def reset_middlecounter(self):
-        self.start_diag_session()
+        self.start_diag_extend_session()
         self.reset_middle_speed_counter()
 
     def reset_highcounter(self):
-        self.start_diag_session()
+        self.start_diag_extend_session()
         self.reset_high_speed_counter()
 
     def reset_DrivWEP(self):
-        self.start_diag_session()
+        self.start_diag_extend_session()
         self.reset_timer_DrivWEP()
 
     def reset_ecu(self):
