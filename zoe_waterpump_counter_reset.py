@@ -23,7 +23,7 @@ class Virginizer(gui.QDialog):
         self.evc_ecu = ecu.Ecu_file(ecufile, True)
         self.setWindowTitle("Water pump counter")
         # x, y, width, high
-        self.setGeometry(100, 100, 480, 420)
+        self.setGeometry(100, 100, 480, 445)
 
         layout = gui.QVBoxLayout()
 
