@@ -209,7 +209,7 @@ class Virginizer(gui.QDialog):
     def reset_ecu(self):
         self.start_diag_session()
         self.reset_low_speed_counter()
-        self.reset_medium_speed_counter()
+        self.reset_middlecounter()
         self.reset_high_speed_counter()
         self.reset_timer_DrivWEP()
 
